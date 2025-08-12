@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather App | code with ck</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="weather-card">
+    <div class="search-box">
+      <input type="text" placeholder="Search city...!">
+      <button>Search</button>
+    </div>
+
+    <div class="location">📍 New Delhi, IN</div>
+    <div class="temp">32°C</div>
+    <div class="weather">☀️ Sunny</div>
+    <div class="Humidity">Humidity: 25% </div>
+    <div class="wind">wind: 100km/h</div>
+  </div>
+   
+<script>
+  const apikey = "fef342f9f007c5fae1dad80b9ceb9701";
+
+  const searchBox = document.querySelector(".search-box input");
+  const searchBtn = document.querySelector(".search-box button");
+
+  async function checkWeather(city) {
+    const apiurl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apikey}`;
+    
+    const response = await fetch(apiurl);
+    const data = await response.json();
+
+    console.log(data); // for debugging
+
+    document.querySelector(".location").innerHTML = "📍 " + data.name + ", " + data.sys.country;
+    document.querySelector(".temp").innerHTML = math.round(data.main.temp )+ "°C";
+    document.querySelector(".weather").innerHTML = "☀️ " + data.weather[0].main;
+    document.querySelector(".Humidity").innerHTML = "Humidity: " + data.main.humidity + "%";
+    document.querySelector(".wind").innerHTML = "Wind: " + data.wind.speed + "km/h";
+  }
+
+  searchBtn.addEventListener("click", () => {
+    const city = searchBox.value.trim();
+    if (city !== "") {
+      checkWeather(city);
+      searchBox.value = "";
+    }
+  });
+
+  // Optional: load default city on start
+  checkWeather("New Delhi");
+</script>
+
+
+</body>
+</html>
